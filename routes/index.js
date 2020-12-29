@@ -82,40 +82,40 @@ router.get('/edit/:id', function(req, res, next) {
 router.post('/update/',upload, function(req, res, next) {
   // let uid = req.params.id
   // console.log(req.body)
+ 
   if(req.file){
-    var updateemp = empModel.findByIdAndUpdate(req.body.id,{
-      name:req.body.uname,
-      email:req.body.email,
-      type:req.body.emptype,
-      age:req.body.age,
-      totalHrs:req.body.ttlhr,
-      hourlyrate:req.body.hrlyrate,
-      total:parseInt(req.body.hrlyrate)*parseInt(req.body.ttlhr),
-      image:req.file.filename
-    }); 
-  }else{
-    var updateemp = empModel.findByIdAndUpdate(req.body.id,{
-      name:req.body.uname,
-      email:req.body.email,
-      type:req.body.emptype,
-      age:req.body.age,
-      totalHrs:req.body.ttlhr,
-      hourlyrate:req.body.hrlyrate,
-      total:parseInt(req.body.hrlyrate)*parseInt(req.body.ttlhr),
-      
-    }); 
-  }
 
-  updateemp.exec(function(error,data){
-    // console.log('data',data)
-    if(error) throw error;
-  //  res.redirect('/')
-   employee.exec(function(error,data){
-    if(error) throw error;
-    res.render('index', { title: 'Employee Record',records:data,success :'Data updated succefully'});
-  })
-    // res.render('edit', { title: 'Employee Edit',records:data});
-  })
+    var dataRecords={
+      name: req.body.uname,
+        email: req.body.email,
+        etype: req.body.emptype,
+        hourlyrate: req.body.hrlyrate,
+        totalHour: req.body.ttlhr,
+        total: parseInt(req.body.hrlyrate) * parseInt(req.body.ttlhr),
+        image:req.file.filename,
+    }
+      }else{
+    
+        var dataRecords={
+          name: req.body.uname,
+            email: req.body.email,
+            etype: req.body.emptype,
+            hourlyrate: req.body.hrlyrate,
+            totalHour: req.body.ttlhr,
+            total: parseInt(req.body.hrlyrate) * parseInt(req.body.ttlhr),
+          
+        }
+      }
+    
+    
+    var update= empModel.findByIdAndUpdate(req.body.id,dataRecords);
+    update.exec(function(err,data){
+    if(err) throw err;
+    employee.exec(function(err,data){
+      if(err) throw err;
+      res.redirect("/");  });
+      });
+      
 });
 router.post('/',upload, function(req, res, next){
 //  console.log(req.body)
